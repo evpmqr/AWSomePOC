@@ -13,22 +13,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// namespace: my-awsome-project
-// params: some_param: some_param_string
-// // Define function only, role gets created by default
-// functions:
-// 	- name: hello-world
-// // resource name ends up being my-awesome-project-hello-word
-// 	handler: some_name
-// 	description: some descr
-// 	codeuri: some/path/zip.zip
-// 	runtime: go1.x
-// 	timeout 5 // Default is 5
-// 	events:
-// 		eventname: name
-// 		type: type
-// 		properties: // depends on type    policies:  - PolicyDoc
-
 // Template is struct representation of config
 type Template struct {
 	Name      string            `yaml:"name"`
@@ -37,6 +21,7 @@ type Template struct {
 	Functions []Lambda          `yaml:"functions,omitempty"`
 }
 
+// Policy is the struct representation of the Policy used literally everywhere
 type Policy struct {
 	Action    []string `yaml:"action"`
 	Effect    string   `yaml:"effect"`
@@ -66,6 +51,7 @@ func (b *Builder) Unmarshal(templateReader io.Reader) (Template, error) {
 	return template, err
 }
 
+// ToTemplateFile writes stuff to a file
 func (b *Builder) ToTemplateFile(template Template) error {
 	filename := fmt.Sprintf("%s.yaml", template.Name)
 	DefaultTemplateHeader := "AWSTemplateFormateVersion: 2010-09-09\nTransform: AWS::Serverless-2016-10-31\n\n"
