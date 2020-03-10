@@ -3,8 +3,8 @@ Transform: AWS::Serverless-2016-10-31
 
 Resources:
 
-	TestFunctionRole:
-		Type: AWS::IAM::Role
+  TestFunctionRole:
+    Type: AWS::IAM::Role
 		Properties:
 			RoleName: test-function-role
 			AssumeRolePolicyDocument:

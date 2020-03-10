@@ -96,8 +96,8 @@ func (b *Builder) formatFunctions(template Template) Template {
 func (b *Builder) createFunctionRole(function Lambda, filename string) error {
 	var nrParsed *template2.Template
 	nrParsed = template2.Must(template.New("").Parse(`
-	{{ .ResourceName}}Role:
-		Type: AWS::IAM::Role
+  {{ .ResourceName}}Role:
+    Type: AWS::IAM::Role
 		Properties:
 			RoleName: {{ .Name}}-role
 			AssumeRolePolicyDocument:
