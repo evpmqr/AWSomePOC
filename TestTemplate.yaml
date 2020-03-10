@@ -5,40 +5,39 @@ Resources:
 
   TestFunctionRole:
     Type: AWS::IAM::Role
-		Properties:
-			RoleName: test-function-role
-			AssumeRolePolicyDocument:
-				Version: 2017-10-17
-					Statement:
-					- Action: sts:AssumeRole
-						Effect: Allow
-						Principal:
-						Service:
-						- lambda.amazonaws.com
-				ManagedPolicyArns:
-				- !Sub someDefaultPolicy{Env}
-				- someDefaultPolicy
-				Policies:
-				- PolicyName: some-policy
-					PolicyDocument:
-					Version: 2012-10-17
-					- Effect: Allow
-						Action:
-						- s3:ListBucket
-						- s3:ListObjectV2
-						- s3:GetObjectLocation
-						Resources:
-						- Resource-1
-						- Resosurce-2
-						
-	TestFunction:
-		Type: AWS::Serverless::Function
-		Properties:
-			CodeUri: ../test/path/pkg.zip
-			Description: this is a description
-			FunctionName: test-function
-			Handler: my-handler
-			Role: !GettAtt TestFunctionRole.Arn
-			Runtime: go1.x
-			Timeout: 5
-	
+    Properties:
+      RoleName: test-function-role
+      AssumeRolePolicyDocument:
+        Version: 2017-10-17
+          Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+            Service:
+            - lambda.amazonaws.com
+        ManagedPolicyArns:
+        - !Sub someDefaultPolicy{Env}
+        - someDefaultPolicy
+        Policies:
+        - PolicyName: some-policy
+          PolicyDocument:
+          Version: 2012-10-17
+          - Effect: Allow
+            Action:
+            - s3:ListBucket
+            - s3:ListObjectV2
+            - s3:GetObjectLocation
+            Resources:
+            - Resource-1
+            - Resosurce-2
+            
+  TestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../test/path/pkg.zip
+      Description: this is a description
+      FunctionName: test-function
+      Handler: my-handler
+      Role: !GettAtt TestFunctionRole.Arn
+      Runtime: go1.x
+      Timeout: 5

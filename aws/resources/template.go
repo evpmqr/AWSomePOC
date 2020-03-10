@@ -98,33 +98,31 @@ func (b *Builder) createFunctionRole(function Lambda, filename string) error {
 	nrParsed = template2.Must(template.New("").Parse(`
   {{ .ResourceName}}Role:
     Type: AWS::IAM::Role
-		Properties:
-			RoleName: {{ .Name}}-role
-			AssumeRolePolicyDocument:
-				Version: 2017-10-17
-					Statement:
-					- Action: sts:AssumeRole
-						Effect: Allow
-						Principal:
-						Service:
-						- lambda.amazonaws.com
-				ManagedPolicyArns:
-				- !Sub someDefaultPolicy{Env}
-				- someDefaultPolicy
-				Policies:
-				- PolicyName: some-policy
-					PolicyDocument:
-					Version: 2012-10-17
-					{{range .Policies}}- Effect: {{ .Effect}}
-						Action:
-						{{range .Action}}- {{ .}}
-						{{end -}}
-						Resources:
-						{{range .Resources}}- {{ .}}
-						{{end -}}
-					{{end -}}
-	`))
-
+    Properties:
+      RoleName: {{ .Name}}-role
+      AssumeRolePolicyDocument:
+        Version: 2017-10-17
+          Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+            Service:
+            - lambda.amazonaws.com
+        ManagedPolicyArns:
+        - !Sub someDefaultPolicy{Env}
+        - someDefaultPolicy
+        Policies:
+        - PolicyName: some-policy
+          PolicyDocument:
+          Version: 2012-10-17
+          {{range .Policies}}- Effect: {{ .Effect}}
+            Action:
+            {{range .Action}}- {{ .}}
+            {{end -}}
+            Resources:
+            {{range .Resources}}- {{ .}}
+            {{end -}}
+          {{end -}}`))
 	var sb strings.Builder
 	err := nrParsed.Execute(&sb, function)
 	if err != nil {
@@ -138,17 +136,17 @@ func (b *Builder) createFunctionRole(function Lambda, filename string) error {
 func (b *Builder) createFunction(function Lambda, filename string) error {
 	var nrParsed *template2.Template
 	nrParsed = template2.Must(template.New("").Parse(`
-	{{ .ResourceName}}:
-		Type: AWS::Serverless::Function
-		Properties:
-			CodeUri: {{ .CodeURI}}
-			Description: {{ .Description}}
-			FunctionName: {{ .Name}}
-			Handler: {{ .Handler}}
-			Role: !GettAtt {{ .ResourceName}}Role.Arn
-			Runtime: {{ .Runtime}}
-			Timeout: {{ .Timeout}}
-	`))
+  {{ .ResourceName}}:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: {{ .CodeURI}}
+      Description: {{ .Description}}
+      FunctionName: {{ .Name}}
+      Handler: {{ .Handler}}
+      Role: !GettAtt {{ .ResourceName}}Role.Arn
+      Runtime: {{ .Runtime}}
+      Timeout: {{ .Timeout}}
+`))
 
 	var sb strings.Builder
 	err := nrParsed.Execute(&sb, function)
