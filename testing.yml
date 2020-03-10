@@ -8,6 +8,17 @@ functions:
     codeuri: ../test/path/pkg.zip
     runtime: go1.x
     timeout: 5
+    environment:
+      somekey: somevalue
+      somekey2: somevalue2
+      somekey3: somevalue3
+    event:
+      eventname: test-event
+      type: Api
+      properties:
+        path: /test
+        method: get
+        restapiid: !Ref TestAPI
     policies:
       - effect: Allow
         action:

@@ -61,7 +61,6 @@ func (b *Builder) ToTemplateFile(template Template) error {
 
 	// Write Resources
 	b.fileClient.WriteToFile(filename, "Resources:\n")
-	fmt.Println("gg")
 	// If template has functions, do function stuff
 	if len(template.Functions) > 0 {
 		template = b.formatFunctions(template)
@@ -80,15 +79,14 @@ func (b *Builder) ToTemplateFile(template Template) error {
 				return err
 			}
 		}
-
 	}
 	return nil
 }
 
 // Sets the namespace of the function to be templateNamespace-functionName
 func (b *Builder) formatFunctions(template Template) Template {
-	for _, function := range template.Functions {
-		function.Name = fmt.Sprintf("%s-%s", template.Namespace, function.Name)
+	for index, function := range template.Functions {
+		template.Functions[index].Name = fmt.Sprintf("%s-%s", template.Namespace, function.Name)
 	}
 	return template
 }
@@ -128,7 +126,6 @@ func (b *Builder) createFunctionRole(function Lambda, filename string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("%s\n", sb.String())
 	err = b.fileClient.WriteToFile(filename, sb.String())
 	return err
 }
@@ -146,6 +143,20 @@ func (b *Builder) createFunction(function Lambda, filename string) error {
       Role: !GettAtt {{ .ResourceName}}Role.Arn
       Runtime: {{ .Runtime}}
       Timeout: {{ .Timeout}}
+      {{if .Environment}}Environment:
+        Variables:
+          {{range $key, $value := .Environment}}{{$key}}: {{$value}}
+          {{end -}}
+      {{end -}}
+      {{if .Event}}Events:
+        {{ .Event.EventName}}
+          Type: {{ .Event.Type}}
+          Properties:
+            {{if eq .Event.Type "Api"}}Path: {{ .Event.Properties.Path}}
+            Method: {{ .Event.Properties.Method}}
+            RestApiId: {{ .Event.Properties.RestAPIID}}
+            {{end -}}
+      {{end -}}
 `))
 
 	var sb strings.Builder
@@ -153,7 +164,6 @@ func (b *Builder) createFunction(function Lambda, filename string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("%s\n", sb.String())
 	err = b.fileClient.WriteToFile(filename, sb.String())
 	return err
 }
