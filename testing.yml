@@ -1,0 +1,19 @@
+name: "TestTemplate"
+namespace: awsome
+functions:
+  - name: test-function
+    resourcename: TestFunction
+    handler: my-handler
+    description: this is a description
+    codeuri: ../test/path/pkg.zip
+    runtime: go1.x
+    timeout: 5
+    policies:
+      - effect: Allow
+        action:
+          - s3:ListBucket
+          - s3:ListObjectV2
+          - s3:GetObjectLocation
+        resources:
+          - Resource-1
+          - Resosurce-2
