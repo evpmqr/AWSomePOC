@@ -1,8 +1,8 @@
 # AWSomePOC
-This is a POC on a little idea I have
-Takes a yml file and converts it to an AWS Template File with the Serverless Application Model Support
-Adding more resources should pretty much be similar to how Lambda is right now
-The goal is to make a CLI that can generate a template for you, and a github bot that will read PRs with the config.yml file and automatically add it to the branch/PR
+This is a POC on a little idea I have.
+Takes a yml file and converts it to an AWS Template File with the Serverless Application Model Support.
+Adding more resources should pretty much be similar to how Lambda is right now.
+The goal is to make a CLI that can generate a template for you, and a github bot that will read PRs with the config.yml file and automatically add it to the branch/PR.
 
 # Requirments
 * Go 1.1x
